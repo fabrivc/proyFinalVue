@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div v-if="!canAccess">
-     <ul class="nav nav-pills nav-justified mb-3">
+      <ul class="nav nav-pills nav-justified mb-3">
         <li class="nav-item">
           <a class="navbar-toggler active" data-mdb-toggle="pill" @click="cambiardeRutaLogin" role="tab" aria-controls="pills-login" aria-selected="true">Login</a>
         </li>
@@ -10,129 +10,125 @@
         </li>
       </ul>
 
-      <login-page 
+      <Login 
       v-show="estoyEnLogin"
       @changeFlag="recibiElMensaje" 
-      :users="usersList"/>
+      :usuarios="listadoDeUsuarios"/>
     
-      <register-page 
+      <Register 
       v-show="!estoyEnLogin"
-      @enviarRegistro="recibiRegistro" 
-      />
-
+      @enviarRegistro="recibirRegistro" 
+      @emit-agregar-usuario="addUsuarioTabla"/>
     </div>
-
-  <div v-else>
-    <main-page 
+    
+    <div v-else>
+    <Main
     v-if="canAccess" 
     @changeFlagFromMain="recibiElMensaje" 
-    :products="productsList"
-    @emitVerDetalle="recibiVerDetalle"
-    @emitAgregarAlCarrito="recibiAgregarAlCarrito"
-    @emitLogout="recibiLogout"
-
-    />
+    :productos="listadoDeProductos"
+    @emitVerDetalle="recibirVerDetalle"
+    @emitAgregarAlCarrito="recibirAgregarAlCarrito"/>
     
-    <cart-page :carro='carrito' @emitActualizarCarritoPrincipal="recibiActualizarAlCarrito"/>
+    <Cart :carro='carrito' @emitActualizarCarritoPrincipal="recibirActualizarAlCarrito"/>
     
-    <products-detail-page v-if="selected" :product="selected"/>
+    <Detail v-if="selected" :producto="selected"/>
 
     </div>
 </div>
-
-
-
 </template>
 
 <script>
-
-import loginPage from "./components/loginPage.vue";
-import registerPage from "./components/registerPage.vue";
-import cartPage from "./components/cartPage.vue";
-import productsDetailPage from "./components/productsDetailPage.vue";
-import mainPage from "./components/mainPage.vue";
-import CartPage from "./components/cartPage.vue";
-import LoginPage from "./components/loginPage.vue";
-import RegisterPage from "./components/registerPage.vue";
-import MainPage from "./components/mainPage.vue";
-import ProductsDetailPage from "./components/productsDetailPage.vue";
+import Login from './components/Login.vue'
+import Main from './components/Main.vue'
+import Register from './components/Register.vue'
+import Cart from './components/Cart.vue'
+import Detail from './components/Detail.vue'
 
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    loginPage,
-    registerPage,
-    cartPage,
-    productsDetailPage,
-    mainPage,
-    CartPage,
-    LoginPage,
-    RegisterPage,
-    MainPage,
-    ProductsDetailPage
-},
-  data() {
-    return {
-      canAccess: false,
-      estoyEnLogin:true,
-      usersList: [],
-      productsList: [
-        {
-          id: 1,
-          titulo: "Flour - Chickpea",
-          descripcion: "Supplement Left 5th Toe with Synth Sub, Open Approach",
-          cantidad: "1",
-          precio: "$2.08",
-          imagen:
-            "https://robohash.org/totampariaturtempore.png?size=50x50&set=set1",
-        },
-        {
-          id: 2,
-          titulo: "Sage Ground Wiberg",
-          descripcion: "Supplement Right Rib with Synth Sub, Perc Approach",
-          cantidad: "1",
-          precio: "$5.90",
-          imagen:
-            "https://robohash.org/praesentiumofficiisipsum.png?size=50x50&set=set1",
-        },
-        {
-          id: 3,
-          titulo: "Pork - Bacon, Sliced",
-          descripcion: "Bypass R Foot Vein to Low Vein w Nonaut Sub, Open",
-          cantidad: "1",
-          precio: "$0.22",
-          imagen: "https://static.abc.es/media/salud/2019/04/17/bacon-cancer-knrB--620x349@abc.jpg",
-        },
-      ],
-      carrito: [],
-      selected: null,
-    };
+    Login,Main,Register,Cart,Detail
   },
+  data(){
+    return{
+    canAccess:false,
+    estoyEnLogin:true,
+    listadoDeUsuarios:[],
+    listadoDeProductos:[{
+  "id": 1,
+  "titulo": "Brownie",
+  "descripcion": "Postre de chocolate",
+  "cantidad": 74,
+  "precio": 23.76,
+  "imagen": "https://images.aws.nestle.recipes/original/2020_06_03T13_21_43_mrs_ImageRecipes_147427lrg.jpg"
+}, {
+  "id": 2,
+  "titulo": "Helado",
+  "descripcion": "Postre frio de diferentes gustos",
+  "cantidad": 53,
+  "precio": 14.03,
+  "imagen": "https://rapanui.com.ar/media/catalog/product/cache/17740dc71becde9a2e44e4a7c359d4cd/1/_/1_kilo.png"
+}, {
+  "id": 3,
+  "titulo": "Panqueques",
+  "descripcion": "Postre de masa con dulce de leche",
+  "cantidad": 25,
+  "precio": 69.84,
+  "imagen": "https://img-global.cpcdn.com/recipes/14bc6c5ef2e509ee/400x400cq70/photo.jpg"
+}, {
+  "id": 4,
+  "titulo": "Churros",
+  "descripcion": "Churros",
+  "cantidad": 41,
+  "precio": 4.47,
+  "imagen": "https://i.pinimg.com/474x/4c/0c/5a/4c0c5a31141421a9cf7f5b3d66bdb70f.jpg"
+}, {
+  "id": 5,
+  "titulo": "Facturas",
+  "descripcion": "Facturas",
+  "cantidad": 85,
+  "precio": 83.36,
+  "imagen": "https://ver.rosario.gob.ar/media/cache/3f/b1/3fb1aaa280925fc390b5f64cf9c54411.png"
+},{
+  "id": 6,
+  "titulo": "Facturas",
+  "descripcion": "Facturas",
+  "cantidad": 85,
+  "precio": 83.36,
+  "imagen": "https://ver.rosario.gob.ar/media/cache/3f/b1/3fb1aaa280925fc390b5f64cf9c54411.png"
+}],
+    carrito:[],
+    selected: null
+    }
+  },
+  addUsuarioTabla(usuario) {
+            console.log(usuario);
+            const nuevoUsuario = {...usuario};
+            this.usuarios.push(nuevoUsuario);
+        },
   methods:{
     recibiElMensaje(){
       this.canAccess = !this.canAccess
     },
-    recibiElRegistro(payload){
-this.usersList.push(payload)
+    recibirRegistro(payload){
+      this.listadoDeUsuarios.push(payload)
     },
-    recibiAgregarAlCarrito(payload){
-this.carrito.push(payload)
+    recibirAgregarAlCarrito(payload){
+      this.carrito.push(payload)
     },
-    recibiActualizarCarrito(payload){
-      this.carrito = payload
+    recibirActualizarAlCarrito(payload){
+          //this.carrito = [...payload]
+          this.carrito = Object.assing(this.carrito,payload)
     },
-    recibiVerDetalle(payload){
+    recibirVerDetalle(payload){
       this.selected = payload
     },
-     cambiardeRutaLogin(){
+    cambiardeRutaLogin(){
       this.estoyEnLogin = !this.estoyEnLogin;
-    }, 
-    recibiLogout(){
-      this.canAccess = !this.canAccess
-    },
+    }
   }
-};
+}
 </script>
 
 <style>
